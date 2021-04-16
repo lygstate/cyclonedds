@@ -59,6 +59,9 @@ else()
     EXPORT "${CMAKE_PROJECT_NAME}"
     DESTINATION "${CMAKE_INSTALL_BINDIR}"
     COMPONENT dev)
+  if (MSVC)
+    install(FILES $<TARGET_PDB_FILE:idlc> DESTINATION bin OPTIONAL)
+  endif()
 
   install(
     FILES Generate.cmake
