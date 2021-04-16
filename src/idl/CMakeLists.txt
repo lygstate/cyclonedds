@@ -14,13 +14,17 @@ cmake_minimum_required(VERSION 3.7)
 
 include(GenerateExportHeader)
 
-find_package(BISON 3.0.4 REQUIRED)
+find_package(BISON 3.0.4)
 find_package(Threads QUIET REQUIRED)
 
 set(binary_dir "${CMAKE_CURRENT_BINARY_DIR}")
 set(source_dir "${CMAKE_CURRENT_SOURCE_DIR}")
 
-bison_target(parser src/parser.y "${binary_dir}/parser.c")
+if (BISON_FOUND)
+  bison_target(parser src/parser.y "${binary_dir}/parser.c")
+else()
+  set(BISON_parser_OUTPUT_SOURCE src/parser.c)
+endif()
 
 # generate hashid.c from md5.h and md5.c to avoid code duplication
 file(READ "${CMAKE_SOURCE_DIR}/src/ddsrt/include/dds/ddsrt/endian.h" endian_h)
